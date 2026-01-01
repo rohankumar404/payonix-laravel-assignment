@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             // Adding role column with default value 'admin'
             // You can place it after a specific column, e.g., 'email'
-            $table->string('role')->default('admin')->after('email'); 
+            $table->string('role')->default('admin')->after('email');
         });
     }
 

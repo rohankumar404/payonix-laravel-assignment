@@ -13,7 +13,7 @@ class ItemPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
@@ -21,7 +21,7 @@ class ItemPolicy
      */
     public function view(User $user, Item $item): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
@@ -29,7 +29,7 @@ class ItemPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
@@ -37,7 +37,7 @@ class ItemPolicy
      */
     public function update(User $user, Item $item): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
@@ -45,7 +45,7 @@ class ItemPolicy
      */
     public function delete(User $user, Item $item): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class ItemPolicy
      */
     public function restore(User $user, Item $item): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
@@ -61,6 +61,6 @@ class ItemPolicy
      */
     public function forceDelete(User $user, Item $item): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 }

@@ -11,7 +11,7 @@ class UpdateItemRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user() && $this->user()->isAdmin();
+        return $this->user()->can('update', $this->route('item'));
     }
 
     /**

@@ -1,59 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Admin Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A simple, secure, and well-structured Admin Management System built with Laravel 12. This project demonstrates core Laravel features including Role-Based Access Control (RBAC), RESTful APIs with Sanctum, and full CRUD functionality for a resource module.
 
-## About Laravel
+## Project Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This application provides a basic foundation for an admin panel where administrators can manage "Items". It features a secure authentication system that distinguishes between regular users and administrators, ensuring that only authorized personnel can access sensitive areas and perform administrative tasks.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The project is built with a focus on clean code, best practices, and a clear separation of concerns, making it an excellent starting point for more complex applications.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech Stack
 
-## Learning Laravel
+-   **Backend**: PHP 8.2+, Laravel 12
+-   **Database**: SQLite (default), MySQL, PostgreSQL
+-   **Authentication**: Laravel Sanctum (for API), Session-based (for Web)
+-   **Frontend**: Blade Templates, Vanilla CSS (no JS frameworks)
+-   **Development Environment**: Laravel Sail (Docker-based) is supported but not required.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Role-Based Access Control (RBAC)**: Simple `admin` role check via custom middleware.
+-   **Secure Admin Dashboard**: A dedicated dashboard at `/admin/dashboard` accessible only to admins, displaying statistics like total users and items.
+-   **Web CRUD for Items**: Full Create, Read, Update, and Delete functionality for items through a secure web interface.
+-   **REST API for Items**: A complete set of RESTful API endpoints for managing items, protected by Laravel Sanctum.
+-   **Form Request Validation**: Robust validation using dedicated Form Request classes to keep controllers clean.
+-   **Eloquent Relationships**: Clear `User` and `Item` model relationships.
+-   **Minimalist UI**: A clean and functional admin UI built with Blade and simple CSS, without the overhead of a large frontend framework.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Getting Started
 
-### Premium Partners
+Follow these instructions to get the project up and running on your local machine for development and testing purposes.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 1. Prerequisites
 
-## Contributing
+-   PHP >= 8.2
+-   Composer
+-   Node.js & NPM
+-   A database server (SQLite is used by default, no server needed)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Clone the Repository
 
-## Code of Conduct
+```bash
+git clone https://github.com/your-username/payonix-laravel-assignment.git
+cd payonix-laravel-assignment
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Install Dependencies
 
-## Security Vulnerabilities
+Install both PHP and JavaScript dependencies.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+# Install Composer (PHP) dependencies
+composer install
 
-## License
+# Install NPM (JS) dependencies
+npm install
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Build frontend assets
+npm run build
+```
+
+### 4. Environment Configuration
+
+Create your local environment file by copying the example file.
+
+```bash
+cp .env.example .env
+```
+
+Then, generate a unique application key.
+
+```bash
+php artisan key:generate
+```
+
+The project is configured to use SQLite by default. The setup script will automatically create the `database/database.sqlite` file for you. If you prefer to use another database like MySQL, update the `DB_*` variables in your `.env` file accordingly.
+
+### 5. Run Database Migrations & Seed
+
+Run the migrations to create the necessary database tables. We will also seed the database with a default admin user.
+
+```bash
+php artisan migrate --seed
+```
+
+### 6. Start the Development Server
+
+You can now start the local development server.
+
+```bash
+php artisan serve
+```
+
+The application will be available at `http://127.0.0.1:8000`.
+
+---
+
+## Usage
+
+### Admin Login
+
+After seeding the database, you can log in with the default administrator account:
+
+-   **Email**: `admin@example.com`
+-   **Password**: `password`
+
+Navigate to `/login` to access the login page. Once logged in, you will be redirected to the admin dashboard at `/admin/dashboard`.
+
+### API Endpoints
+
+The API provides full CRUD functionality for the `items` resource. All endpoints are prefixed with `/api/admin` and are protected by Laravel Sanctum and an `admin` role check.
+
+To interact with the API, you must first authenticate and obtain an API token.
+
+| Method | URI                    | Action   | Route Name            |
+| :----- | :--------------------- | :------- | :-------------------- |
+| `GET`  | `/api/admin/items`     | `index`  | `api.items.index`     |
+| `POST` | `/api/admin/items`     | `store`  | `api.items.store`     |
+| `GET`  | `/api/admin/items/{id}`| `show`   | `api.items.show`      |
+| `PUT`  | `/api/admin/items/{id}`| `update` | `api.items.update`    |
+| `DELETE`| `/api/admin/items/{id}`| `destroy`| `api.items.destroy`   |
+
+**Example Request (Get all items):**
+
+```
+GET /api/admin/items
+Accept: application/json
+Authorization: Bearer <YOUR_API_TOKEN>
+```
+

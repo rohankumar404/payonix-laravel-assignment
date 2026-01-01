@@ -3,31 +3,32 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Models\Item;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ItemController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(): View
     {
-        Gate::authorize('viewAny', Item::class);
+        $this->authorize('viewAny', Item::class);
         $items = Item::with('creator')->latest()->paginate(10);
         return view('admin.items.index', compact('items'));
     }
 
     public function create(): View
     {
-        Gate::authorize('create', Item::class);
+        $this->authorize('create', Item::class);
         return view('admin.items.create');
     }
 
     public function store(StoreItemRequest $request): RedirectResponse
     {
-        // Automatically assign created_by to the logged-in user
         $request->user()->items()->create($request->validated());
 
         return redirect()->route('admin.items.index')
@@ -36,7 +37,7 @@ class ItemController extends Controller
 
     public function edit(Item $item): View
     {
-        Gate::authorize('update', $item);
+        $this->authorize('update', $item);
         return view('admin.items.edit', compact('item'));
     }
 
@@ -50,7 +51,8 @@ class ItemController extends Controller
 
     public function destroy(Item $item): RedirectResponse
     {
-        Gate::authorize('delete', $item);
+        $this->authorize('delete', $item);
+
         $item->delete();
 
         return redirect()->route('admin.items.index')

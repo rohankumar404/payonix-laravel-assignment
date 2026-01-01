@@ -1,51 +1,59 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Items')
-@section('header', 'Items')
+@section('title', 'Items')
 
 @section('content')
     <div class="card">
-        <div class="flex-end" style="margin-bottom: 1rem;">
+        <div class="card-header">
+            <h2 class="card-title">Items Management</h2>
             <a href="{{ route('admin.items.create') }}" class="btn btn-primary">Create New Item</a>
         </div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Created By</th>
-                    <th>Created At</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($items as $item)
+        <div class="table-container">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{ $item->id }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>
-                            <span style="padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; background: {{ $item->status === 'active' ? '#d1fae5; color: #065f46' : '#f3f4f6; color: #374151' }}">
-                                {{ ucfirst($item->status) }}
-                            </span>
-                        </td>
-                        <td>{{ $item->creator->name ?? 'Unknown' }}</td>
-                        <td>{{ $item->created_at->format('Y-m-d') }}</td>
-                        <td>
-                            <a href="{{ route('admin.items.edit', $item) }}" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</a>
-                            <form action="{{ route('admin.items.destroy', $item) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Delete</button>
-                            </form>
-                        </td>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Created By</th>
+                        <th>Created At</th>
+                        <th class="text-right">Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse($items as $item)
+                        <tr>
+                            <td>{{ $item->id }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>
+                                <span class="badge {{ $item->status === 'active' ? 'badge-success' : 'badge-secondary' }}">
+                                    {{ ucfirst($item->status) }}
+                                </span>
+                            </td>
+                            <td>{{ $item->creator->name ?? 'Unknown' }}</td>
+                            <td>{{ $item->created_at->format('M d, Y') }}</td>
+                            <td class="text-right">
+                                <div class="flex-end">
+                                    <a href="{{ route('admin.items.edit', $item) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                    <form action="{{ route('admin.items.destroy', $item) }}" method="POST" onsubmit="return confirm('Are you sure?');" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #6b7280; padding: 2rem;">No items found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
-        <div style="margin-top: 1rem;">
+        <div style="margin-top: 1.5rem;">
             {{ $items->links() }}
         </div>
     </div>
