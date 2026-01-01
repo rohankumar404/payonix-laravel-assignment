@@ -1,132 +1,164 @@
 # Laravel Admin Management System
 
-A simple, secure, and well-structured Admin Management System built with Laravel 12. This project demonstrates core Laravel features including Role-Based Access Control (RBAC), RESTful APIs with Sanctum, and full CRUD functionality for a resource module.
+A minimal and secure Admin Management System built using Laravel as part of a technical assessment.  
+This project demonstrates core Laravel concepts such as authentication, role-based access control, and CRUD operations, with a focus on clean structure and best practices rather than UI complexity.
+
+---
 
 ## Project Overview
 
-This application provides a basic foundation for an admin panel where administrators can manage "Items". It features a secure authentication system that distinguishes between regular users and administrators, ensuring that only authorized personnel can access sensitive areas and perform administrative tasks.
+This application provides an admin-only panel where authenticated administrators can manage a simple **Items** resource.  
+Access to all administrative pages and APIs is restricted using role-based middleware to ensure proper authorization.
 
-The project is built with a focus on clean code, best practices, and a clear separation of concerns, making it an excellent starting point for more complex applications.
+The project is intentionally scoped to highlight backend fundamentals, authorization flow, and data handling in Laravel.
+
+---
 
 ## Tech Stack
 
--   **Backend**: PHP 8.2+, Laravel 12
--   **Database**: SQLite (default), MySQL, PostgreSQL
--   **Authentication**: Laravel Sanctum (for API), Session-based (for Web)
--   **Frontend**: Blade Templates, Vanilla CSS (no JS frameworks)
--   **Development Environment**: Laravel Sail (Docker-based) is supported but not required.
+- **Backend**: PHP 8.2+, Laravel (10/11 compatible)
+- **Database**: MySQL (recommended), PostgreSQL, SQLite (optional)
+- **Authentication**:
+  - Session-based authentication (Web)
+  - Laravel Sanctum (API)
+- **Frontend**: Blade Templates (no frontend frameworks)
+
+---
 
 ## Features
 
--   **Role-Based Access Control (RBAC)**: Simple `admin` role check via custom middleware.
--   **Secure Admin Dashboard**: A dedicated dashboard at `/admin/dashboard` accessible only to admins, displaying statistics like total users and items.
--   **Web CRUD for Items**: Full Create, Read, Update, and Delete functionality for items through a secure web interface.
--   **REST API for Items**: A complete set of RESTful API endpoints for managing items, protected by Laravel Sanctum.
--   **Form Request Validation**: Robust validation using dedicated Form Request classes to keep controllers clean.
--   **Eloquent Relationships**: Clear `User` and `Item` model relationships.
--   **Minimalist UI**: A clean and functional admin UI built with Blade and simple CSS, without the overhead of a large frontend framework.
+- Secure admin authentication (login & logout)
+- Role-based access control using custom middleware
+- Admin dashboard (`/admin/dashboard`)
+- Items management with full CRUD functionality
+- RESTful API for Items (admin-protected)
+- Request validation using Form Request classes
+- Eloquent relationships between Users and Items
+- Simple and clean admin interface
+
+---
+
+## Database Structure
+
+### users
+- id
+- name
+- email
+- password
+- role
+- timestamps
+
+### items
+- id
+- name
+- description
+- status
+- created_by (foreign key → users.id)
+- timestamps
 
 ---
 
 ## Getting Started
 
-Follow these instructions to get the project up and running on your local machine for development and testing purposes.
+Follow the steps below to set up the project locally.
 
 ### 1. Prerequisites
 
--   PHP >= 8.2
--   Composer
--   Node.js & NPM
--   A database server (SQLite is used by default, no server needed)
+- PHP >= 8.2
+- Composer
+- Node.js & NPM
+- MySQL or PostgreSQL (recommended)
+
+---
 
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/payonix-laravel-assignment.git
+git clone https://github.com/rohankumar404/payonix-laravel-assignment.git
 cd payonix-laravel-assignment
-```
 
-### 3. Install Dependencies
+3. Install Dependencies
 
-Install both PHP and JavaScript dependencies.
-
-```bash
-# Install Composer (PHP) dependencies
 composer install
-
-# Install NPM (JS) dependencies
 npm install
-
-# Build frontend assets
 npm run build
-```
 
-### 4. Environment Configuration
 
-Create your local environment file by copying the example file.
+4. Environment Configuration
 
-```bash
 cp .env.example .env
-```
-
-Then, generate a unique application key.
-
-```bash
 php artisan key:generate
-```
 
-The project is configured to use SQLite by default. The setup script will automatically create the `database/database.sqlite` file for you. If you prefer to use another database like MySQL, update the `DB_*` variables in your `.env` file accordingly.
 
-### 5. Run Database Migrations & Seed
+Update database credentials in the .env file as needed:
 
-Run the migrations to create the necessary database tables. We will also seed the database with a default admin user.
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=payonix-assignment
+DB_USERNAME=root
+DB_PASSWORD=
 
-```bash
+
+5. Run Migrations & Seeders
+
 php artisan migrate --seed
-```
 
-### 6. Start the Development Server
 
-You can now start the local development server.
+This will create all required tables and seed a default admin user.
 
-```bash
+
+6. Start the Development Server
+
 php artisan serve
-```
 
-The application will be available at `http://127.0.0.1:8000`.
 
----
+Application URL:
 
-## Usage
+http://127.0.0.1:8000
 
-### Admin Login
 
-After seeding the database, you can log in with the default administrator account:
+Default Admin Credentials
 
--   **Email**: `admin@example.com`
--   **Password**: `password`
+Email: admin@example.com  
+Password: password
 
-Navigate to `/login` to access the login page. Once logged in, you will be redirected to the admin dashboard at `/admin/dashboard`.
 
-### API Endpoints
+Login URL:
 
-The API provides full CRUD functionality for the `items` resource. All endpoints are prefixed with `/api/admin` and are protected by Laravel Sanctum and an `admin` role check.
+/login
 
-To interact with the API, you must first authenticate and obtain an API token.
 
-| Method | URI                    | Action   | Route Name            |
-| :----- | :--------------------- | :------- | :-------------------- |
-| `GET`  | `/api/admin/items`     | `index`  | `api.items.index`     |
-| `POST` | `/api/admin/items`     | `store`  | `api.items.store`     |
-| `GET`  | `/api/admin/items/{id}`| `show`   | `api.items.show`      |
-| `PUT`  | `/api/admin/items/{id}`| `update` | `api.items.update`    |
-| `DELETE`| `/api/admin/items/{id}`| `destroy`| `api.items.destroy`   |
+Admin Routes
 
-**Example Request (Get all items):**
+Dashboard: /admin/dashboard  
+Items Management: /admin/items  
 
-```
-GET /api/admin/items
-Accept: application/json
-Authorization: Bearer <YOUR_API_TOKEN>
-```
+All admin routes are protected by auth and role:admin middleware.
 
+
+API Endpoints
+
+All API routes are prefixed with /api/admin and require authentication.
+
+GET     /api/admin/items          List items  
+POST    /api/admin/items          Create item  
+GET     /api/admin/items/{id}     View item  
+PUT     /api/admin/items/{id}     Update item  
+DELETE  /api/admin/items/{id}     Delete item  
+
+API authentication is handled using Laravel Sanctum.
+
+
+Security Notes
+
+Authorization is enforced using middleware  
+CSRF protection is enabled for web routes  
+Mass assignment protection is applied in models  
+Validation is handled using Form Request classes  
+
+
+Assignment Context
+
+This project was developed as part of a Laravel technical assessment.  
+The scope is intentionally kept minimal to demonstrate backend structure, security, and role-based access control.
