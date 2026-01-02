@@ -14,14 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create the default admin user if they don't exist
-        User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-            ]
-        );
+        $this->call(AdminUserSeeder::class);
     }
 }
